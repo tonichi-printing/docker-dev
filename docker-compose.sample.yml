@@ -21,7 +21,12 @@ services:
 
   sample-scheduler:
     image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:queue-scheduler
-    entrypoint: ["sh", "-c", "while true; do php /var/www/html/sample-app/artisan schedule:run --verbose --no-interaction & sleep 60; done"]
+    entrypoint:
+      [
+        "sh",
+        "-c",
+        "while true; do php /var/www/html/sample-app/artisan schedule:run --verbose --no-interaction & sleep 60; done",
+      ]
     container_name: sample-scheduler
     volumes:
       - .:/var/www/html/sample-app:delegated
