@@ -79,6 +79,10 @@ COPY start-nginx.sh /etc/services.d/nginx/run
 COPY start-fpm.sh /etc/services.d/php_fpm/run
 
 RUN chmod 755 /etc/services.d/nginx/run \
-    && chmod 755 /etc/services.d/php_fpm/run \
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/sterr /var/log/nginx/error.log
+  && chmod 755 /etc/services.d/php_fpm/run \
+  && ln -sf /dev/stdout /var/log/nginx/access.log \
+  && ln -sf /dev/sterr /var/log/nginx/error.log
+
+# Install zsh and Oh my ZSH
+RUN apk add zsh curl git \
+  && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
