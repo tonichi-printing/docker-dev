@@ -85,4 +85,5 @@ RUN chmod 755 /etc/services.d/nginx/run \
 
 # Install zsh and Oh my ZSH
 RUN apk add zsh curl git \
-  && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+  && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd
