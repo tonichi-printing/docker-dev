@@ -50,6 +50,8 @@ RUN \
   # Available PHP Packages: https://github.com/codecasts/php-alpine
   php php-bcmath php-curl php-common php-dom php-fpm php-gd php-gmp php-iconv php-json php-mbstring \
   php-opcache php-pdo php-pdo_mysql php-redis php-session php-sockets php-xml php-zip php-zlib \
+  # fixes iconv library with alpine
+  && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv \
   # Update www.conf
   && sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = ${PHP_FPM_USER}|g" /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf \
   && sed -i "s|;listen.group\s*=\s*nobody|listen.group = ${PHP_FPM_GROUP}|g" /etc/php${PHP_MAJOR_VERSION}/php-fpm.d/www.conf \
@@ -71,6 +73,8 @@ RUN \
   && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
   && echo "${TIMEZONE}" > /etc/timezone \
   && sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php${PHP_MAJOR_VERSION}/php.ini
+
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # Copy NGINX service script
 COPY start-nginx.sh /etc/services.d/nginx/run
