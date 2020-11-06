@@ -1,15 +1,33 @@
 version: "3.7"
 
+# networks:
+#   default:
+#     external:
+#       name: dev
+
 services:
-  sample-server:
-    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:php-nginx-server
-    container_name: sample-server
+  sample-php:
+    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:php
+    container_name: sample-php
     volumes:
       - .:/var/www/html/sample-app:delegated
-      - ./docker/dev/server/nginx.conf:/etc/nginx/nginx.conf:cached #Proper nginx.conf file needs to be mounted
-    ports:
-      - "8200:80"
     working_dir: /var/www/html/sample-app
+    depends_on:
+      - sample-mysql
+
+  # Open http://localhost:8100/sample-app for prod to see result of npm run build.
+  # That is after running npm run build on local device
+  sample-nginx:
+    image: nginx:stable-alpine
+    container_name: sample-nginx
+    ports:
+      - "8100:80"
+    volumes:
+      - .:/var/www/html/sample-app
+      - ./docker/dev/nginx/nginx.conf:/etc/nginx/nginx.conf:cached # Make sure the file exists in the correct directory
+    depends_on:
+      - sample-php
+      - sample-mysql
 
   sample-queue:
     image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:queue-scheduler
