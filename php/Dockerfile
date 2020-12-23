@@ -5,6 +5,8 @@ RUN apk add --update --no-cache autoconf g++ make libpng-dev oniguruma-dev libxm
   && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
   && docker-php-ext-configure gmp \
   && docker-php-ext-install pdo pdo_mysql pcntl sockets gd bcmath gmp opcache \
+  && pecl install redis \
+  && docker-php-ext-enable redis \
   # fixes iconv library with alpine
   && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv
 
