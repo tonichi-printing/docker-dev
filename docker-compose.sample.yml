@@ -30,7 +30,7 @@ services:
       - sample-mysql
 
   sample-queue:
-    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:queue-scheduler
+    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:php
     # command: php /var/www/html/sample-app/artisan horizon # For Horizon
     command: php /var/www/html/sample-app/artisan queue:listen --tries=3 --queue="sqs-queue-name" # For SQS
     container_name: sample-queue
@@ -38,7 +38,7 @@ services:
       - .:/var/www/html/sample-app:delegated
 
   sample-scheduler:
-    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:queue-scheduler
+    image: 477120415291.dkr.ecr.ap-northeast-1.amazonaws.com/dev:php
     entrypoint:
       [
         "sh",
